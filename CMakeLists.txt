@@ -4,36 +4,40 @@ project(Viktoriia VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick QuickControls2)
 
 qt_standard_project_setup(REQUIRES 6.5)
 
+# Указываем исполняемый файл
 qt_add_executable(appViktoriia
     main.cpp
 )
 
+
+# Подключаем файлы QML
 qt_add_qml_module(appViktoriia
     URI Viktoriia
     VERSION 1.0
     QML_FILES
-        Main.qml
+        Views/main.qml
+        Views/Login.qml
 )
 
-# Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
-# If you are developing for iOS or macOS you should consider setting an
-# explicit, fixed bundle identifier manually though.
+# Настройки для macOS/Windows
 set_target_properties(appViktoriia PROPERTIES
-#    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.appViktoriia
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
 )
 
+# Линковка библиотек
 target_link_libraries(appViktoriia
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::QuickControls2
 )
 
+# Установка приложения
 include(GNUInstallDirs)
 install(TARGETS appViktoriia
     BUNDLE DESTINATION .
